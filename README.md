@@ -56,7 +56,7 @@ Or can be accessed by status code:
 S(404);
 ```
 
-All returned statuses can be passed to `next(...)` as-is (being functions)
+All returned statuses can be passed to `next(...)` as-is or (being functions)
 can be used to further customize what is passed to the error handler.
 
 Customization and inclusion can be done in few ways:
@@ -92,11 +92,11 @@ try {
 
 will result in the error handler receiving the following as its first parameter:
 
-```json
+```javascript
 {
   "status": 400,
   "message": "Bad Request"
-  "error": ... the reference to the error for logging ...
+  "error": ... // reference to the error for logging
 }
 ```
 
@@ -115,12 +115,12 @@ next(S.UNAUTHORIZED({
 
 will result in the error handler receiving the following as its first parameter:
 
-```json
+```javascript
 {
   "status": 400,
   "message": "No way I am letting you in",
   "details": { "key": "Some extra stuff here" }
-  "error": ... the reference to myCaughtException ...
+  "error": // reference to myCaughtException
 }
 ```
 
