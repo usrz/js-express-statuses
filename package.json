@@ -1,0 +1,30 @@
+{
+  "name": "express-statuses",
+  "description": "Simple response statuses for Express 4.x",
+  "version": "1.0.0",
+  "author": {
+    "name": "Pier Fumagalli",
+    "email": "pier@usrz.com"
+  },
+  "main": "src/express-statuses.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usrz/js-express-statuses"
+  },
+  "homepage": "https://github.com/usrz/js-express-statuses",
+  "keywords": [
+    "express",
+    "statuses",
+    "status",
+    "http"
+  ],
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "grunt": "^0.4.5",
+    "grunt-simple-mocha": "^0.4.0"
+  },
+  "dependencies": {
+    "statuses": "^1.2.1"
+  }
+}
