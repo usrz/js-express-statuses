@@ -35,7 +35,6 @@ for (var i = 0; i < statuses.codes.length; i ++) {
   var name = message.replace(/'m/ig, ' am') // I'm a teapot :)
                     .replace(/[- \(\)]+/ig, '_')
                     .toUpperCase();
-                    console.log('`' + name + '`: ' + code);
 
   // Make our new status function
   byCode[code] = byName[name] = maker(code, message);
