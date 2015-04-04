@@ -7,16 +7,27 @@ var byName = {};
 function maker(code, message) {
   var made = function(object) {
     var status = { status: code, message: message };
-    if (! object) return status;
+    var string = '';
 
-    if (typeof(object) === 'string') {
-      status.message = object;
-    } else if (object instanceof Error) {
-      status.error = object;
-    } else {
-      if (object.message) status.message = object.message;
-      if (object.details) status.details = object.details;
-      if (object.error)   status.error   = object.error;
+
+    if (object) {
+      if (typeof(object) === 'string') {
+        status.message = object;
+        string = ': ' + object;
+      } else if (object instanceof Error) {
+        status.error = object;
+      } else {
+        if (object.message) {
+          status.message = object.message;
+          string = ': ' + object;
+        }
+        if (object.details) status.details = object.details;
+        if (object.error)   status.error   = object.error;
+      }
+    }
+
+    status.toString = function() {
+      return this.status + " " + message + string;
     }
 
     return status;
@@ -24,6 +35,9 @@ function maker(code, message) {
 
   made.status = code;
   made.message = message;
+  made.toString = function() {
+    return this.status + " " + this.message;
+  }
   return made;
 };
 
