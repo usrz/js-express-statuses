@@ -38,6 +38,9 @@ function maker(code, message) {
   made.toString = function() {
     return this.status + " " + this.message;
   }
+  made.toJSON = function() {
+    return { status: this.status, message: this.message }
+  }
   return made;
 };
 
