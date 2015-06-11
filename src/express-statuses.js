@@ -5,43 +5,68 @@ var byName = {};
 
 // The status maker...
 function maker(code, message) {
-  var made = function(object) {
-    var status = { status: code, message: message };
-    var string = '';
+  function Status(object) {
+    if (! (this instanceof Status)) return new Status(object);
 
+    var msg = message, det, err, str = message;
 
     if (object) {
       if (typeof(object) === 'string') {
-        status.message = object;
-        string = ': ' + object;
+        msg = object;
+        str += ': ' + msg;
       } else if (object instanceof Error) {
-        status.error = object;
+        err = object;
       } else {
         if (object.message) {
-          status.message = object.message;
-          string = ': ' + object;
+          msg = object.message;
+          str += ': ' + msg;
         }
-        if (object.details) status.details = object.details;
-        if (object.error)   status.error   = object.error;
+        if (object.details) det = object.details;
+        if (object.error)   err = object.error;
       }
     }
 
-    status.toString = function() {
-      return this.status + " " + message + string;
+    if (msg) this.message = msg;
+    if (det) this.details = det;
+    if (err) this.error   = err;
+
+    Object.defineProperty(this, 'toString', {
+      enumerable: false,
+      configurable: false,
+      value: function() {
+        return '[Status ' + this.status + ' ' + str + ']';
+      }
+    });
+
+    Error.captureStackTrace(this, Status);
+    if (err) {
+      var stack = this.stack || this.toString();
+      if (err instanceof Error) {
+        stack += '\n  Caused by ' + (err.stack || err.toString());
+      } else {
+        stack += '\n  Caused by [' + typeof (err) + '] ' + err.toString();
+      }
+      Object.defineProperty(this, 'stack', {
+        enumerable:   false,
+        configurable: false,
+        value:        stack
+      });
     }
-
-    return status;
   }
 
-  made.status = code;
-  made.message = message;
-  made.toString = function() {
-    return this.status + " " + this.message;
+  Status.prototype = new Error();
+  Status.prototype.name = 'Status ' + code;
+  Status.prototype.status   = Status.status  = code;
+  Status.prototype.message  = Status.message = message;
+  Status.prototype.toString = Status.toString = function() {
+    return '[Status ' + this.status + ' ' + this.message + ']';
   }
-  made.toJSON = function() {
-    return { status: this.status, message: this.message }
+  Status.prototype.toJSON = Status.toJSON = function() {
+    var json = { status: this.status, message: this.message }
+    if (this.details) json.details = JSON.parse(JSON.stringify(this.details));
+    return json;
   }
-  return made;
+  return Status;
 };
 
 // Loop through all known statuses
@@ -65,7 +90,7 @@ exports = module.exports = function get(status) {
   } else if ((code < 100) || (code > 599)) {
     return maker(500, 'Invalid status code (' + code + ')');
   } else {
-    return byCode[code] || maker(code, "Unknown");
+    return byCode[code] || maker(code, 'Unknown');
   }
 };
 
