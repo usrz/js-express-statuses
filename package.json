@@ -12,6 +12,9 @@
     "type": "git",
     "url": "https://github.com/usrz/js-express-statuses"
   },
+  "scripts": {
+    "test": "grunt"
+  },
   "homepage": "https://github.com/usrz/js-express-statuses",
   "keywords": [
     "express",
@@ -22,6 +25,7 @@
   "devDependencies": {
     "chai": "^2.2.0",
     "grunt": "^0.4.5",
+    "grunt-cli": "^1.2.0",
     "grunt-simple-mocha": "^0.4.0"
   },
   "dependencies": {
