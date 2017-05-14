@@ -71,6 +71,7 @@ function maker(code, message) {
 
 // Loop through all known statuses
 var statuses = require('statuses');
+var codes = {};
 for (var i = 0; i < statuses.codes.length; i ++) {
   var code = statuses.codes[i];
   var message = statuses[code];
@@ -80,6 +81,7 @@ for (var i = 0; i < statuses.codes.length; i ++) {
 
   // Make our new status function
   byCode[code] = byName[name] = maker(code, message);
+  codes[name] = code;
 }
 
 /* Our exports */
@@ -96,3 +98,4 @@ exports = module.exports = function get(status) {
 
 /* Copy all our names */
 for (var i in byName) exports[i] = byName[i];
+exports.C = codes;

@@ -42,6 +42,15 @@ app.use(function(err, req, res, next) {
 })
 ```
 
+A handy collection of status codes can also be accessed via the `C` sub-object:
+
+```javascript
+app.post('/collection', function(req, res, next) {
+  ...
+  res.sendStatus(S.C.CREATED);
+})
+```
+
 #### Getting statuses
 
 Statuses can be referenced by name:
